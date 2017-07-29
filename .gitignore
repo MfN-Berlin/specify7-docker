@@ -1,0 +1,5 @@
+# exclude everything
+specify6_thick_client/
+
+# exception to the rule
+!specify_thick_client/copy_your_specify6_thick_client_here 
