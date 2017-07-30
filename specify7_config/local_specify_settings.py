@@ -5,7 +5,7 @@ THICK_CLIENT_LOCATION = '/usr/local/specify6/'
 
 # Set the database name to the mysql database you
 # want to access.
-DATABASE_NAME = 'specify'
+DATABASE_NAME = 'specify_mfn'
 
 DATABASE_HOST = '172.17.0.1'
 DATABASE_PORT = '3306'
