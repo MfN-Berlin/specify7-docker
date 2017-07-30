@@ -23,13 +23,7 @@ var initialContext = require('./initialcontext.js');
                 return { genus: path && path.Genus && path.Genus.name,
                          species: path && path.Species && path.Species.name };
             });
-        },
-	CollectionObject: function(resource) {
-		return api.getCollectionObject(resource).pipe(function(object) {
-			return { collectionObject: object,
-				 reservedText: object && object.reservedtext };
-		});
-	}
+        }
     };
 
 module.exports =   UIPlugin.extend({
@@ -42,14 +36,12 @@ module.exports =   UIPlugin.extend({
             placeHolder.val() === 'plugin' && placeHolder.val('');
             this.fieldName = placeHolder.attr('name');
             var fieldInfo = this.model.specifyModel.getField(this.fieldName);
-//	console.log("weblink fieldInfo: ");
-//	console.log(fieldInfo);
             var webLinkName = this.init.weblink == null ? fieldInfo.getWebLinkName() : this.init.weblink;
             if (webLinkName == null) console.error("couldn't determine weblink for", this.fieldName);
             this.def = webLinksDefs[webLinkName];
 
             if (this.inFormTable) {
-                newEl = $('<div class="specify-plugin-weblink-in-table">').append('<a target="_blank">');
+                newEl = $('<div class="specify-plugin-weblink-in-table">').append('<a>');
                 placeHolder.replaceWith(newEl);
                 this.setElement(newEl);
             } else {
@@ -64,7 +56,7 @@ module.exports =   UIPlugin.extend({
 
                 var title = this.def && this.def.find('> desc').text();
 
-                $('<a target="_blank">', { title: title })
+                $('<a>', { title: title })
                     .prependTo(this.el)
                     .append($('<img>', { src: icons.getIcon(this.init.icon || "WebLink") }))
                     .button();
@@ -80,19 +72,17 @@ module.exports =   UIPlugin.extend({
             var inFormTable = this.inFormTable;
             this.buildUrl().done(function(url) {
                 a.attr('href', url);
-//console.log("weblink url:"+ url);
                 inFormTable && !this.def && a.text(url || '');
            });
         },
         buildUrl: function() {
             if (!this.def) return this.model.rget(this.fieldName);
-//console.log("weblink baseURLStr"+this.def.find('baseURLStr').text());
+
             var template = this.def.find('baseURLStr').text()
                     .replace(/<\s*this\s*>/g, '<_this>')
                     .replace(/AMP/g, '&')
                     .replace(/</g, '<%= ')
                     .replace(/>/g, ' %>');
-//console.log("weblink baseURLStr"+this.def.find('baseURLStr').text());
 
             var args = {};
             _.each(this.def.find('weblinkdefarg > name'),function(argName) {

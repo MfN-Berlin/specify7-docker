@@ -41,12 +41,6 @@ var querystring = require('./querystring.js');
             var url = '/api/specify_tree/' + model + '/' + treeResource.id + '/path/';
             return $.get(url).promise();
         },
-        getCollectionObject: function(objectResource) {
-            if (objectResource.id == null) return $.when(null);
-            var model = objectResource.specifyModel.name.toLowerCase();
-            var url = '/api/specify/' + model + '/' + objectResource.id + '/';
-            return $.get(url).promise();
-        },
         makeResourceViewUrl: function(specifyModel, resourceId, recordSetId) {
             var url = '/specify/view/' + specifyModel.name.toLowerCase() + '/' + (resourceId || 'new') + '/';
             return recordSetId == null ? url : querystring.param(url, {recordsetid: recordSetId});
