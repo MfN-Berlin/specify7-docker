@@ -23,7 +23,13 @@ var initialContext = require('./initialcontext.js');
                 return { genus: path && path.Genus && path.Genus.name,
                          species: path && path.Species && path.Species.name };
             });
-        }
+        },
+	CollectionObject: function(resource) {
+		return api.getCollectionObject(resource).pipe(function(object) {
+			return { collectionObject: object,
+				 reservedText: object && object.reservedtext };
+		});
+	}
     };
 
 module.exports =   UIPlugin.extend({
@@ -41,7 +47,7 @@ module.exports =   UIPlugin.extend({
             this.def = webLinksDefs[webLinkName];
 
             if (this.inFormTable) {
-                newEl = $('<div class="specify-plugin-weblink-in-table">').append('<a>');
+                newEl = $('<div class="specify-plugin-weblink-in-table">').append('<a target="_blank">');
                 placeHolder.replaceWith(newEl);
                 this.setElement(newEl);
             } else {
@@ -56,7 +62,7 @@ module.exports =   UIPlugin.extend({
 
                 var title = this.def && this.def.find('> desc').text();
 
-                $('<a>', { title: title })
+                $('<a target="_blank">', { title: title })
                     .prependTo(this.el)
                     .append($('<img>', { src: icons.getIcon(this.init.icon || "WebLink") }))
                     .button();
@@ -77,7 +83,6 @@ module.exports =   UIPlugin.extend({
         },
         buildUrl: function() {
             if (!this.def) return this.model.rget(this.fieldName);
-
             var template = this.def.find('baseURLStr').text()
                     .replace(/<\s*this\s*>/g, '<_this>')
                     .replace(/AMP/g, '&')
