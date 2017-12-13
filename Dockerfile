@@ -71,7 +71,7 @@ RUN chown -R specify:specify /usr/local/specify7 && \
 RUN	cd /usr/local/specify7/ && \
 	su - root -c "cd /usr/local/specify7/ && make all"
 
-# remove Specify 6 in order to keep the container smaller (it will be mounted via a docker volume
+# remove Specify 6 in order to keep the container smaller (it will be mounted via a docker volume)
 RUN rm -rf /usr/local/specify6/*
 
 	
