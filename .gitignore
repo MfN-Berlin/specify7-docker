@@ -1,3 +1,5 @@
 # exclude everything
 specify6_thick_client/
+private
+.private
 
