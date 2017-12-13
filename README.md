@@ -22,8 +22,8 @@ docker build ./ --tag=specify7:latest
 ```
 docker run -d  \
     --name "specify7" \
-    --port 80:80 
-    --volume "/your/path/to/cloned/repo/specify6_thick_client:/usr/local/specify6"
-    --volume "/your/path/to/cloned/repo/specify7_config:/usr/local/specify_config"
+    --port 80:80 \
+    --volume "/your/path/to/cloned/repo/specify6_thick_client:/usr/local/specify6" \
+    --volume "/your/path/to/cloned/repo/specify7_config:/usr/local/specify_config" \
     specify7:latest
 ```
