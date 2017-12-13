@@ -1,7 +1,9 @@
-# Specify7 in Docker
+# Specify 7 in Docker
 
 ## Purpose
+
 Dockerized version of [Specify 7](https://github.com/specify/specify7)
+
 
 ## Installation
 
@@ -12,7 +14,7 @@ Dockerized version of [Specify 7](https://github.com/specify/specify7)
 
 - Build the Docker image
 ```
-cd __/your/path/to/cloned/repo/__
+cd /your/path/to/cloned/repo/
 docker build ./ --tag=specify7:latest
 ```
 
@@ -21,7 +23,7 @@ docker build ./ --tag=specify7:latest
 docker run -d  \
     --name "specify7" \
     --port 80:80 
-    --volume "__/your/path/to/cloned/repo__/specify6_thick_client:/usr/local/specify6"
-    --volume "__/your/path/to/cloned/repo__/specify7_config:/usr/local/specify_config"
+    --volume "/your/path/to/cloned/repo/specify6_thick_client:/usr/local/specify6"
+    --volume "/your/path/to/cloned/repo/specify7_config:/usr/local/specify_config"
     specify7:latest
 ```
