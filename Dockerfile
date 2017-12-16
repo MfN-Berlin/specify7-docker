@@ -1,6 +1,10 @@
 FROM eboraas/debian:stable
 MAINTAINER Falko Gloeckler <falko.gloeckler@mfn-berlin.de>
 
+# enter the release version tag in order to install the correct version 
+# that complies with your Specify 6 version
+
+ENV SPECIFY7_VERSION=7.3.0
 
 
 ##############################################
@@ -23,8 +27,16 @@ RUN cd /tmp && \
 
 RUN apt-get -y install nodejs
 
+# for latest (development) version
+#RUN cd /usr/local/ && \
+#	git clone git://github.com/specify/specify7.git
+
+# for stable release version
 RUN cd /usr/local/ && \
-	git clone git://github.com/specify/specify7.git
+	curl -L -o specify7.tar.gz https://github.com/specify/specify7/archive/v$SPECIFY7_VERSION.tar.gz && \
+	tar -xvf specify7.tar.gz && \
+	mv specify7-$SPECIFY7_VERSION specify7 && \
+	rm -rf specify7.tar.gz
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -45,7 +57,7 @@ RUN ln -sf /usr/local/specify_config/local_specify_settings.py /usr/local/specif
 # create specify user that runs the web application
 RUN useradd specify && \
 	mkdir /home/specify && \
-	chown specify.specify /home/specify && \
+	chown -R specify.specify /home/specify && \
 	chown -R specify:specify /usr/local/
 
 # install virtual environment	
@@ -79,7 +91,7 @@ RUN rm -rf /usr/local/specify6/*
 ### APACHE CONFIGURATION ###
 
 ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
+ENV APACHE_RUN_GROUP specify
 ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2/apache2.pid
@@ -91,8 +103,8 @@ RUN ln -sf /dev/stdout /var/log/apache2/access.log && \
 	
 # link apache config file and service script from the mounted config volume
 RUN rm /etc/apache2/sites-enabled/000-default.conf  && \
-	ln -sf /usr/local/specify_config/local_specifyweb_apache.conf /etc/apache2/sites-enabled/ && \ 
-	ln -sf /usr/local/specify_config/apache2-foreground /usr/local/bin/
+	ln -sf /usr/local/specify_config/local_specifyweb_apache.conf /etc/apache2/sites-enabled/ && \
+	mv /usr/local/specify_config/apache2-foreground /usr/local/bin/
 	
 RUN /usr/sbin/a2ensite default-ssl
 RUN /usr/sbin/a2enmod ssl
@@ -100,7 +112,10 @@ RUN /usr/sbin/a2dismod python
 RUN /usr/sbin/a2enmod wsgi
 RUN /usr/sbin/a2enmod cgid	
 
-RUN  chmod +x /usr/local/bin/apache2-foreground	
+RUN  chmod +x /usr/local/bin/apache2-foreground
+
+# avoid apache2 daemon start during boot
+RUN update-rc.d -f apache2 remove
 
 
 
