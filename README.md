@@ -38,3 +38,5 @@ docker run -d  \
 docker exec -it specify7 chown -R root.specify /usr/local/specify6
 docker restart specify7
 ```
+
+- Done. Your Specify 7 instance should be available at http://localhost:80/  (or any other address that points to your Docker container)
