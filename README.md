@@ -9,6 +9,9 @@ This will not install any database for Specify, so you need to have a running Sp
 
 - If you have no Specify6 running, you need to install it (see http://www.specifysoftware.org/join/download/)
 - Clone this repository.
+```
+git clone https://github.com/MfN-Berlin/specify7-docker
+```
 - Copy your Specify 6 client into the directory ```specify6_thick_client```, because Specify 7 is based on Specify 6 (all your forms and individual configurations will be preserved
 - Rename ```example.local_specify_settings.py``` to ```local_specify_settings.py``` (see directory specify_config)
 - Add your database connection details in ```local_specify_settings.py``` (you will find additional details as comments in the file itself)
