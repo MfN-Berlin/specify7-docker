@@ -27,7 +27,7 @@ docker build ./ --tag=specify7:latest
 docker run -d  \
     --name "specify7" \
     --publish 80:80 \
-	--restart "always" \
+    --restart "always" \
     --volume "/absolute/path/to/cloned/repo/specify6_thick_client:/usr/local/specify6" \
     --volume "/absolute/path/to/cloned/repo/specify7_config:/usr/local/specify_config" \
     specify7:latest
